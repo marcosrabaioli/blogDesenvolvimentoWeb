@@ -29,11 +29,12 @@
 <div class="content">
     <div>
         <h1>Comentários</h1>
-
         {% for comentario in comentarios %}
-            <p>{{ comentario.autor.username }}</p>
-            <p>{{ comentario.texto|linebreaksbr }}</p>
-            <p>{{ comentario.data }}</p>
+            <div class="comentario">
+                <h3><a>{{ comentario.autor.username }}</a></h3>
+                <div class="date">{{ comentario.data }}</div>
+                <p>{{ comentario.texto|linebreaksbr }}</p>
+            </div>
         {% endfor %}
 
     </div>
