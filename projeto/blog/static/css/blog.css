@@ -43,3 +43,7 @@ h1 a, h1 a:visited, h1 a:active{
 .comentario p{
     padding-left: 30px;
 }
+
+.content textarea{
+    width: 100%;
+}

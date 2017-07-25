@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Post, Comentario
 from django.utils import timezone
+from .forms import formComentario
 
 
 
@@ -14,7 +15,19 @@ def post_list(request):
 
 def post_detail(request, pk):
 
-    post = Post.objects.get(id=pk)
-    comentarios = Comentario.objects.filter(post=post)
+    if request.method == "POST":
+        form =  formComentario(request.POST)
+        if form.is_valid():
+            comentario = form.save(commit=False)
+            comentario.autor = request.user
+            comentario.data = timezone.now()
+            comentario.post = Post.objects.get(id=pk)
+            comentario.save()
+            return redirect(post_detail, pk=pk)
+    else:
+        post = Post.objects.get(id=pk)
+        comentarios = Comentario.objects.filter(post=post).order_by('data')
+        form = formComentario()
 
-    return render(request, 'post_detail.html', {'post': post, 'comentarios': comentarios})
+
+    return render(request, 'post_detail.html', {'post': post, 'comentarios': comentarios, 'form': form})
