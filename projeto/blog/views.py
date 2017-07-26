@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render, redirect
 from .models import Post, Comentario
 from django.utils import timezone
-from .forms import formComentario
+from .forms import formComentario, formPost
 
 
 
@@ -31,3 +31,19 @@ def post_detail(request, pk):
 
 
     return render(request, 'post_detail.html', {'post': post, 'comentarios': comentarios, 'form': form})
+
+def post_new(request):
+
+    if request.method == "POST":
+        form =  formPost(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.autor = request.user
+            post.data_criacao = timezone.now()
+            post.save()
+            form = formPost()
+            return render(request, 'post_new.html', {'form': form})
+
+    else:
+        form = formPost()
+        return render(request, 'post_new.html', {'form': form})
