@@ -10,6 +10,7 @@ class Post(models.Model):
     texto = models.TextField()
     data_criacao = models.DateTimeField(default=timezone.now)
     data_publicacao = models.DateTimeField(blank=True, null=True)
+    visualizacoes = models.IntegerField(default=0)
 
     def publish(self):
         self.data_publicacao = timezone.now()
