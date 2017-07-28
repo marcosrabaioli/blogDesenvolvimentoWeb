@@ -114,6 +114,20 @@ def post_edit(request, pk):
 
 
 
+def post_delete(request, pk):
+
+    if request.user.id is None:
+        redirect(logar)
+
+    if request.user.is_staff:
+
+        Post.objects.get(id = pk).delete()
+        return redirect(post_list)
+    else:
+        return redirect(post_list)
+
+
+
 
 
 
